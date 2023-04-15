@@ -67,11 +67,44 @@ TEST(TVec4, SubtractFromVector) {
     ASSERT_EQ(vec3[3], -4.75);
 }
 
-TEST(TVec4, ScalarMultipyVectors) {
+TEST(TVec4, MultipyWithScalar) {
     TVec4 vec = {1., 2., 3., 5.};
     vec *= 2;
     ASSERT_EQ(vec[0], 2.);
     ASSERT_EQ(vec[1], 4.);
     ASSERT_EQ(vec[2], 6.);
     ASSERT_EQ(vec[3], 10.);
+}
+
+TEST(TVec4, DivideWithScalar) {
+    TVec4 vec = {1., 2., 3., 5.};
+    vec /= 2;
+    ASSERT_EQ(vec[0], 0.5);
+    ASSERT_EQ(vec[1], 1.);
+    ASSERT_EQ(vec[2], 1.5);
+    ASSERT_EQ(vec[3], 2.5);
+}
+
+TEST(TVec4, ScalarMultipyVectors) {
+    TVec4 vec = {1., 2., 3., 5.};
+    auto vec2 = vec * 2.;
+    auto vec3 = 4. * vec;
+    ASSERT_EQ(vec2[0], 2.);
+    ASSERT_EQ(vec2[1], 4.);
+    ASSERT_EQ(vec2[2], 6.);
+    ASSERT_EQ(vec2[3], 10.);
+    ASSERT_EQ(vec3[0], 4.);
+    ASSERT_EQ(vec3[1], 8.);
+    ASSERT_EQ(vec3[2], 12.);
+    ASSERT_EQ(vec3[3], 20.);
+}
+
+TEST(TVec4, DivideVectorWithScalar) {
+    TVec4 vec = {1., 2., 3., 5.};
+    auto vec2 = vec / 2.;
+
+    ASSERT_EQ(vec2[0], 0.5);
+    ASSERT_EQ(vec2[1], 1.);
+    ASSERT_EQ(vec2[2], 1.5);
+    ASSERT_EQ(vec2[3], 2.5);
 }
