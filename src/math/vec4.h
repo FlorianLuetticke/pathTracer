@@ -43,4 +43,31 @@ class TVec4 {
         ret -= other;
         return ret;
     }
+
+    TVec4 &operator*=(double val) {
+        for (size_t i = 0; i < 4; ++i) {
+            _data[i] *= val;
+        }
+        return *this;
+    }
+    TVec4 &operator/=(double val) {
+        *this *= 1 / val;
+        return *this;
+    }
+
+    TVec4 operator*(double val) {
+        TVec4 ret = *this;
+        ret *= val;
+        return ret;
+    }
+    TVec4 operator/(double val) {
+        TVec4 ret = *this;
+        ret *= 1 / val;
+        return ret;
+    }
 };
+TVec4 operator*(double val, const TVec4 &vec) {
+    TVec4 ret = vec;
+    ret *= val;
+    return ret;
+}
