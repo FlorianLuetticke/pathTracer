@@ -1,6 +1,6 @@
 #include <array>
+#include <cmath>
 #include <stdexcept>
-
 class TVec4 {
     std::array<double, 4> _data;
 
@@ -32,13 +32,13 @@ class TVec4 {
         return *this;
     }
 
-    TVec4 operator+(const TVec4 &other) {
+    TVec4 operator+(const TVec4 &other) const {
         TVec4 ret = *this;
         ret += other;
         return ret;
     }
 
-    TVec4 operator-(const TVec4 &other) {
+    TVec4 operator-(const TVec4 &other) const {
         TVec4 ret = *this;
         ret -= other;
         return ret;
@@ -55,15 +55,46 @@ class TVec4 {
         return *this;
     }
 
-    TVec4 operator*(double val) {
+    TVec4 operator*(double val) const {
         TVec4 ret = *this;
         ret *= val;
         return ret;
     }
-    TVec4 operator/(double val) {
+    TVec4 operator/(double val) const {
         TVec4 ret = *this;
         ret *= 1 / val;
         return ret;
+    }
+
+    double dot(const TVec4 &other) const {
+        double dot = 0;
+        for (size_t i = 0; i < 4; ++i) {
+            dot += _data[i] * other._data[i];
+        }
+        return dot;
+    }
+    double dot3(const TVec4 &other) const {
+        double dot = 0;
+        for (size_t i = 0; i < 3; ++i) {
+            dot += _data[i] * other._data[i];
+        }
+        return dot;
+    }
+
+    double norm() const {
+        double dot = 0;
+        for (size_t i = 0; i < 4; ++i) {
+            dot += _data[i] * _data[i];
+        }
+        return std::sqrt(dot);
+    }
+
+    double norm3() const {
+        double dot = 0;
+        for (size_t i = 0; i < 3; ++i) {
+            dot += _data[i] * _data[i];
+        }
+        return std::sqrt(dot);
     }
 };
 TVec4 operator*(double val, const TVec4 &vec) {

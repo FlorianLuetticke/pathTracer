@@ -1,6 +1,7 @@
+#include <cmath>
+
 #include "gtest/gtest.h"
 #include "vec4.h"
-
 TEST(TVec4, Create) {
     TVec4 vec1;
 
@@ -107,4 +108,38 @@ TEST(TVec4, DivideVectorWithScalar) {
     ASSERT_EQ(vec2[1], 1.);
     ASSERT_EQ(vec2[2], 1.5);
     ASSERT_EQ(vec2[3], 2.5);
+}
+
+TEST(TVec4, MemberDotProduct) {
+    TVec4 vec = {1., 2., 3., 5.};
+    TVec4 vec2 = {2., 3., -9., 0.25};
+    auto dot = vec.dot(vec2);
+    auto dot2 = vec2.dot(vec);
+    ASSERT_EQ(dot, dot2);
+    ASSERT_EQ(dot, 2. + 6. - 27. + 5. / 4.);
+}
+
+TEST(TVec4, MemberDot3Product) {
+    TVec4 vec = {1., 2., 3., 5.};
+    TVec4 vec2 = {2., 3., -9., 0.25};
+    auto dot = vec.dot3(vec2);
+    auto dot2 = vec2.dot3(vec);
+    ASSERT_EQ(dot, dot2);
+    ASSERT_EQ(dot, 2. + 6. - 27.);
+}
+
+TEST(TVec4, MemberNorm) {
+    TVec4 vec = {1., 2., 3., 5.};
+    auto norm = vec.norm();
+
+    ASSERT_EQ(norm, std::sqrt(vec.dot(vec)));
+    ASSERT_EQ(norm, std::sqrt(39));
+}
+
+TEST(TVec4, MemberNorm3) {
+    TVec4 vec = {1., 2., 3., 5.};
+    auto norm = vec.norm3();
+
+    ASSERT_EQ(norm, std::sqrt(vec.dot3(vec)));
+    ASSERT_EQ(norm, std::sqrt(14));
 }
