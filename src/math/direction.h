@@ -19,7 +19,7 @@ class TDirection {
     const double& y() const { return val[1]; }
     const double& z() const { return val[2]; }
 
-    bool isValid() { return val[3] != 0.; }
+    bool isValid() { return val[3] == 0.; }
 
     TDirection& operator+=(const TDirection& other) {
         val += other.val;

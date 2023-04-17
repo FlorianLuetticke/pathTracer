@@ -17,7 +17,7 @@ class TPoint {
     const double& y() const { return val[1]; }
     const double& z() const { return val[2]; }
 
-    bool isValid() { return val[3] != 1.; }
+    bool isValid() { return val[3] == 1.; }
 
     TPoint& operator+=(const TDirection& other) {
         val += other.val;
@@ -45,10 +45,14 @@ class TPoint {
         return ret;
     }
 
-    friend TPoint operator-(const TDirection& lhs, const TPoint& rhs) {
-        auto ret = rhs;
-        ret -= lhs;
-        return ret;
+    // friend TPoint operator-(const TDirection& lhs, const TPoint& rhs) {
+    //     return TPoint(lhs.x() - rhs.x(), lhs.y() - rhs.y(), lhs.z() -
+    //     rhs.z());
+    // }
+
+    friend TDirection operator-(const TPoint& lhs, const TPoint& rhs) {
+        TVec4 data = lhs.val - rhs.val;
+        return TDirection(data[0], data[1], data[2]);
     }
 
     bool operator==(const TPoint& other) const {

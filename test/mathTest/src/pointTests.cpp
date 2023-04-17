@@ -77,10 +77,24 @@ TEST(TPoint, subtractPointAndDirection) {
     TPoint point = {5., 6., 3.};
     TDirection direction = {1., 2., 3.};
     TPoint result = point - direction;
-    TPoint result2 = direction - point;
+    // TPoint result2 = direction - point;
 
     ASSERT_EQ(result, TPoint(4., 4., 0.));
-    ASSERT_EQ(result2, TPoint(-4., -4., 0.));
+    // ASSERT_EQ(result2, TPoint(-4., -4., 0.));
     ASSERT_TRUE(result.isValid());
-    ASSERT_TRUE(result2.isValid());
+    // ASSERT_TRUE(result2.isValid());
+}
+
+TEST(TPoint, SubtractPointsToGetDirecton) {
+    // following should hold true:
+    // P2=P1 + (P2-P1)  -> P2-P1 is the direction from P1 to P2.
+    TPoint point1 = {5., 6., 3.};
+    TPoint point2 = {2., 1., 1.};
+    TDirection direction = point2 - point1;
+    ASSERT_TRUE(direction.isValid());
+    point1 += direction;
+
+    ASSERT_EQ(point2, point1);
+    ASSERT_TRUE(point1.isValid());
+    ASSERT_TRUE(point2.isValid());
 }
