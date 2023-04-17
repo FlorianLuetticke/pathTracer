@@ -1,8 +1,8 @@
 #pragma once
 #include <ostream>
 
+#include "direction.h"
 #include "fmt/format.h"
-#include "vec4.h"
 class TPoint {
     TVec4 val;
 
@@ -16,6 +16,47 @@ class TPoint {
     const double& x() const { return val[0]; }
     const double& y() const { return val[1]; }
     const double& z() const { return val[2]; }
+
+    bool isValid() { return val[3] != 1.; }
+
+    TPoint& operator+=(const TDirection& other) {
+        val += other.val;
+        return *this;
+    }
+    TPoint operator+(const TDirection& other) const {
+        auto ret = *this;
+        ret += other;
+        return ret;
+    }
+
+    friend TPoint operator+(const TDirection& lhs, const TPoint& rhs) {
+        auto ret = rhs;
+        ret += lhs;
+        return ret;
+    }
+
+    TPoint& operator-=(const TDirection& other) {
+        val -= other.val;
+        return *this;
+    }
+    TPoint operator-(const TDirection& other) const {
+        auto ret = *this;
+        ret -= other;
+        return ret;
+    }
+
+    friend TPoint operator-(const TDirection& lhs, const TPoint& rhs) {
+        auto ret = rhs;
+        ret -= lhs;
+        return ret;
+    }
+
+    bool operator==(const TPoint& other) const {
+        return this->val == other.val;
+    }
+    bool operator!=(const TPoint& other) const {
+        return this->val != other.val;
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const TPoint& dir) {
         os << "P[" << dir.x() << ", " << dir.y() << ", " << dir.z();
