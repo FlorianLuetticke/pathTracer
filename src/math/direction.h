@@ -3,8 +3,10 @@
 
 #include "fmt/format.h"
 #include "vec4.h"
+class TPoint;
 class TDirection {
     TVec4 val;
+    friend class TPoint;
 
    public:
     TDirection(){};
@@ -16,6 +18,8 @@ class TDirection {
     const double& x() const { return val[0]; }
     const double& y() const { return val[1]; }
     const double& z() const { return val[2]; }
+
+    bool isValid() { return val[3] != 0.; }
 
     TDirection& operator+=(const TDirection& other) {
         val += other.val;
@@ -59,8 +63,19 @@ class TDirection {
 
     TDirection operator-() const { return {-val[0], -val[1], -val[2]}; }
 
+    double norm() const { return val.norm3(); }
+    double dot(const TDirection& other) const { return val.dot3(other.val); }
+    TDirection cross(const TDirection& other) const {
+        TDirection ret;
+        ret.val = val.cross3(other.val);
+        return ret;
+    }
+
     bool operator==(const TDirection& other) const {
         return this->val == other.val;
+    }
+    bool operator!=(const TDirection& other) const {
+        return this->val != other.val;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const TDirection& dir) {
