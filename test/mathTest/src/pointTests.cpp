@@ -42,3 +42,45 @@ TEST(TPoint, Assignment) {
     ASSERT_EQ(point2.y(), 6.);
     ASSERT_EQ(point2.z(), 7.);
 }
+
+TEST(TPoint, addDirection) {
+    TPoint point = {5., 6., 3.};
+    TDirection direction = {1., 2., 3.};
+    point += direction;
+
+    ASSERT_EQ(point, TPoint(6., 8., 6.));
+    ASSERT_TRUE(point.isValid());
+}
+
+TEST(TPoint, addPointAndDirection) {
+    TPoint point = {5., 6., 3.};
+    TDirection direction = {1., 2., 3.};
+    TPoint result = point + direction;
+    TPoint result2 = direction + point;
+
+    ASSERT_EQ(result, TPoint(6., 8., 6.));
+    ASSERT_EQ(result2, TPoint(6., 8., 6.));
+    ASSERT_TRUE(result.isValid());
+    ASSERT_TRUE(result2.isValid());
+}
+
+TEST(TPoint, subtractDirection) {
+    TPoint point = {5., 6., 3.};
+    TDirection direction = {1., 2., 3.};
+    point -= direction;
+
+    ASSERT_EQ(point, TPoint(4., 4., 0.));
+    ASSERT_TRUE(point.isValid());
+}
+
+TEST(TPoint, subtractPointAndDirection) {
+    TPoint point = {5., 6., 3.};
+    TDirection direction = {1., 2., 3.};
+    TPoint result = point - direction;
+    TPoint result2 = direction - point;
+
+    ASSERT_EQ(result, TPoint(4., 4., 0.));
+    ASSERT_EQ(result2, TPoint(-4., -4., 0.));
+    ASSERT_TRUE(result.isValid());
+    ASSERT_TRUE(result2.isValid());
+}
