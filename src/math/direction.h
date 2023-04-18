@@ -18,7 +18,7 @@ class TDirection {
     const double& x() const { return val[0]; }
     const double& y() const { return val[1]; }
     const double& z() const { return val[2]; }
-
+    const TVec4& underlying() const { return val; }
     bool isValid() { return val[3] == 0.; }
 
     TDirection& operator+=(const TDirection& other) {
