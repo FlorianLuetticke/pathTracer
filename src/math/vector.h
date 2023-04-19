@@ -11,7 +11,7 @@ class TVector {
    public:
     TVector(){};
     TVector(double x, double y, double z) : val(x, y, z, 0.){};
-
+    TVector(const TVec4& in) : val(in) { val[3] = 0.; };
     double& x() { return val[0]; }
     double& y() { return val[1]; }
     double& z() { return val[2]; }
