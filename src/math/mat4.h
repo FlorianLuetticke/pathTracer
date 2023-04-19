@@ -4,7 +4,6 @@
 #include <ostream>
 #include <stdexcept>
 
-#include "direction.h"
 #include "fmt/format.h"
 #include "point.h"
 #include "vec4.h"
@@ -61,6 +60,14 @@ class TMat4 {
         _data[2][3] = translation[2];
         _data[3][3] = 1.;
     }
+    // could be implemented as "Matrix-like"
+    static TMat4 Identity() {
+        TMat4 ret;
+        for (size_t i = 0; i < 4; ++i) {
+            ret(i, i) = 1.;
+        }
+        return ret;
+    }
 
     TMat4(const TTransposedView &in) {
         for (size_t i = 0; i < 4; ++i) {
@@ -74,7 +81,7 @@ class TMat4 {
     const double &operator()(size_t i, size_t j) const { return _data[i][j]; }
     TTransposedView transpose() const { return TTransposedView(*this); }
 
-    TVec4 operator*(const TVec4 &in) {
+    TVec4 operator*(const TVec4 &in) const {
         TVec4 ret;
 
         for (size_t i = 0; i < 4; ++i) {
@@ -98,7 +105,7 @@ class TMat4 {
         return *this;
     }
 
-    TMat4 operator*(const TMat4 &in) {
+    TMat4 operator*(const TMat4 &in) const {
         TMat4 ret;
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
@@ -123,7 +130,7 @@ class TMat4 {
         return *this;
     }
 
-    TMat4 operator*(const TTransposedView &in) {
+    TMat4 operator*(const TTransposedView &in) const {
         TMat4 ret;
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
