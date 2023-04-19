@@ -4,13 +4,13 @@
 #include "fmt/format.h"
 #include "vec4.h"
 class TPoint;
-class TDirection {
+class TVector {
     TVec4 val;
     friend class TPoint;
 
    public:
-    TDirection(){};
-    TDirection(double x, double y, double z) : val(x, y, z, 0.){};
+    TVector(){};
+    TVector(double x, double y, double z) : val(x, y, z, 0.){};
 
     double& x() { return val[0]; }
     double& y() { return val[1]; }
@@ -21,64 +21,64 @@ class TDirection {
     const TVec4& underlying() const { return val; }
     bool isValid() { return val[3] == 0.; }
 
-    TDirection& operator+=(const TDirection& other) {
+    TVector& operator+=(const TVector& other) {
         val += other.val;
         return *this;
     }
-    TDirection operator+(const TDirection& other) const {
+    TVector operator+(const TVector& other) const {
         auto ret = *this;
         ret += other;
         return ret;
     }
 
-    TDirection& operator-=(const TDirection& other) {
+    TVector& operator-=(const TVector& other) {
         val -= other.val;
         return *this;
     }
-    TDirection operator-(const TDirection& other) const {
+    TVector operator-(const TVector& other) const {
         auto ret = *this;
         ret -= other;
         return ret;
     }
-    TDirection& operator*=(double scalar) {
+    TVector& operator*=(double scalar) {
         val *= scalar;
         return *this;
     }
 
-    TDirection operator*(double scalar) const {
+    TVector operator*(double scalar) const {
         auto ret = *this;
         ret *= scalar;
         return ret;
     }
-    TDirection& operator/=(double scalar) {
+    TVector& operator/=(double scalar) {
         val /= scalar;
         return *this;
     }
 
-    TDirection operator/(double scalar) const {
+    TVector operator/(double scalar) const {
         auto ret = *this;
         ret /= scalar;
         return ret;
     }
 
-    TDirection operator-() const { return {-val[0], -val[1], -val[2]}; }
+    TVector operator-() const { return {-val[0], -val[1], -val[2]}; }
 
     double norm() const { return val.norm3(); }
-    double dot(const TDirection& other) const { return val.dot3(other.val); }
-    TDirection cross(const TDirection& other) const {
-        TDirection ret;
+    double dot(const TVector& other) const { return val.dot3(other.val); }
+    TVector cross(const TVector& other) const {
+        TVector ret;
         ret.val = val.cross3(other.val);
         return ret;
     }
 
-    bool operator==(const TDirection& other) const {
+    bool operator==(const TVector& other) const {
         return this->val == other.val;
     }
-    bool operator!=(const TDirection& other) const {
+    bool operator!=(const TVector& other) const {
         return this->val != other.val;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const TDirection& dir) {
+    friend std::ostream& operator<<(std::ostream& os, const TVector& dir) {
         os << "D[" << dir.x() << ", " << dir.y() << ", " << dir.z();
         if (dir.val[3] == 0.) {
             os << "]";
@@ -89,8 +89,8 @@ class TDirection {
     }
 };
 
-inline TDirection operator*(double val, const TDirection& vec) {
-    TDirection ret = vec;
+inline TVector operator*(double val, const TVector& vec) {
+    TVector ret = vec;
     ret *= val;
     return ret;
 }

@@ -3,3 +3,4 @@ PathTracerV2.code-workspace
 .vscode/settings.json
 compile_commands.json
 test/mathTest/mathTest
+**/.cache/*
