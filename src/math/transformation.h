@@ -20,6 +20,43 @@ class TTransformation {
     static TTransformation Identity() {
         return {TMat4::Identity(), TMat4::Identity()};
     }
+    static TTransformation Translation(const TVector &in) {
+        TTransformation ret{TMat4::Identity(), TMat4::Identity()};
+        for (size_t i = 0; i < 3; ++i) {
+            ret.mat(i, 3) = in.underlying()[i];
+            ret.invTransMat(3, i) = -in.underlying()[i];
+        }
+        return ret;
+    }
+
+    static TTransformation Scale(const TVector &in,
+                                 const TPoint &origin = {0., 0., 0.}) {
+        TTransformation ret;
+        for (size_t i = 0; i < 3; ++i) {
+            ret.mat(i, i) = in.underlying()[i];
+            ret.invTransMat(i, i) = 1 / in.underlying()[i];
+
+            ret.mat(i, 3) = origin.underlying()[i] * (1. - in.underlying()[i]);
+            ret.invTransMat(3, i) =
+                origin.underlying()[i] * (1. - 1 / in.underlying()[i]);
+        }
+        ret.mat(3, 3) = 1.;
+        ret.invTransMat(3, 3) = 1.;
+        return ret;
+    }
+
+    static TTransformation AxisRotate(double angle, int axis = 0) {
+        TTransformation ret;
+        // for (size_t i = 0; i < 3; ++i) {
+        //     ret.mat(i, i) = in.underlying()[i];
+        //     ret.invTransMat(i, i) = 1 / in.underlying()[i];
+
+        //     ret.mat(i, 3) = origin.underlying()[i] * (1. -
+        //     in.underlying()[i]); ret.invTransMat(3, i) =
+        //         origin.underlying()[i] * (1. - 1 / in.underlying()[i]);
+        // }
+        return ret;
+    }
 
     bool operator==(const TTransformation &other) const {
         return mat == other.mat;
@@ -28,9 +65,18 @@ class TTransformation {
         return not(*this == other);
     }
 
+    TTransformation operator*(const TTransformation &in) const {
+        return {mat * in.mat, invTransMat * in.invTransMat};
+    }
+
     TPoint transform(const TPoint &in) const { return mat * in.underlying(); }
     TPoint inverseTransform(const TPoint &in) const {
-        return mat * in.underlying();
+        return invTransMat.transpose() * in.underlying();
+    }
+
+    TVector transform(const TVector &in) const { return mat * in.underlying(); }
+    TVector inverseTransform(const TVector &in) const {
+        return invTransMat.transpose() * in.underlying();
     }
 
     friend std::ostream &operator<<(std::ostream &os,
