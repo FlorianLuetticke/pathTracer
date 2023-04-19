@@ -1,15 +1,15 @@
 #pragma once
 #include <ostream>
 
-#include "direction.h"
 #include "fmt/format.h"
+#include "vector.h"
 class TPoint {
     TVec4 val;
 
    public:
-    TPoint(){};
+    TPoint() { val[3] = 1.; };
     TPoint(double x, double y, double z) : val(x, y, z, 1.){};
-
+    TPoint(const TVec4& in) : val(in) { val[3] = 1.; };
     double& x() { return val[0]; }
     double& y() { return val[1]; }
     double& z() { return val[2]; }
@@ -20,40 +20,40 @@ class TPoint {
 
     bool isValid() { return val[3] == 1.; }
 
-    TPoint& operator+=(const TDirection& other) {
+    TPoint& operator+=(const TVector& other) {
         val += other.val;
         return *this;
     }
-    TPoint operator+(const TDirection& other) const {
+    TPoint operator+(const TVector& other) const {
         auto ret = *this;
         ret += other;
         return ret;
     }
 
-    friend TPoint operator+(const TDirection& lhs, const TPoint& rhs) {
+    friend TPoint operator+(const TVector& lhs, const TPoint& rhs) {
         auto ret = rhs;
         ret += lhs;
         return ret;
     }
 
-    TPoint& operator-=(const TDirection& other) {
+    TPoint& operator-=(const TVector& other) {
         val -= other.val;
         return *this;
     }
-    TPoint operator-(const TDirection& other) const {
+    TPoint operator-(const TVector& other) const {
         auto ret = *this;
         ret -= other;
         return ret;
     }
 
-    // friend TPoint operator-(const TDirection& lhs, const TPoint& rhs) {
+    // friend TPoint operator-(const TVector& lhs, const TPoint& rhs) {
     //     return TPoint(lhs.x() - rhs.x(), lhs.y() - rhs.y(), lhs.z() -
     //     rhs.z());
     // }
 
-    friend TDirection operator-(const TPoint& lhs, const TPoint& rhs) {
+    friend TVector operator-(const TPoint& lhs, const TPoint& rhs) {
         TVec4 data = lhs.val - rhs.val;
-        return TDirection(data[0], data[1], data[2]);
+        return TVector(data[0], data[1], data[2]);
     }
 
     bool operator==(const TPoint& other) const {

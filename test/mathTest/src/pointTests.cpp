@@ -43,20 +43,20 @@ TEST(TPoint, Assignment) {
     ASSERT_EQ(point2.z(), 7.);
 }
 
-TEST(TPoint, addDirection) {
+TEST(TPoint, addvector) {
     TPoint point = {5., 6., 3.};
-    TDirection direction = {1., 2., 3.};
-    point += direction;
+    TVector vector = {1., 2., 3.};
+    point += vector;
 
     ASSERT_EQ(point, TPoint(6., 8., 6.));
     ASSERT_TRUE(point.isValid());
 }
 
-TEST(TPoint, addPointAndDirection) {
+TEST(TPoint, addPointAndvector) {
     TPoint point = {5., 6., 3.};
-    TDirection direction = {1., 2., 3.};
-    TPoint result = point + direction;
-    TPoint result2 = direction + point;
+    TVector vector = {1., 2., 3.};
+    TPoint result = point + vector;
+    TPoint result2 = vector + point;
 
     ASSERT_EQ(result, TPoint(6., 8., 6.));
     ASSERT_EQ(result2, TPoint(6., 8., 6.));
@@ -64,20 +64,20 @@ TEST(TPoint, addPointAndDirection) {
     ASSERT_TRUE(result2.isValid());
 }
 
-TEST(TPoint, subtractDirection) {
+TEST(TPoint, subtracTVector) {
     TPoint point = {5., 6., 3.};
-    TDirection direction = {1., 2., 3.};
-    point -= direction;
+    TVector vector = {1., 2., 3.};
+    point -= vector;
 
     ASSERT_EQ(point, TPoint(4., 4., 0.));
     ASSERT_TRUE(point.isValid());
 }
 
-TEST(TPoint, subtractPointAndDirection) {
+TEST(TPoint, subtractPointAndvector) {
     TPoint point = {5., 6., 3.};
-    TDirection direction = {1., 2., 3.};
-    TPoint result = point - direction;
-    // TPoint result2 = direction - point;
+    TVector vector = {1., 2., 3.};
+    TPoint result = point - vector;
+    // TPoint result2 = vector - point;
 
     ASSERT_EQ(result, TPoint(4., 4., 0.));
     // ASSERT_EQ(result2, TPoint(-4., -4., 0.));
@@ -87,12 +87,12 @@ TEST(TPoint, subtractPointAndDirection) {
 
 TEST(TPoint, SubtractPointsToGetDirecton) {
     // following should hold true:
-    // P2=P1 + (P2-P1)  -> P2-P1 is the direction from P1 to P2.
+    // P2=P1 + (P2-P1)  -> P2-P1 is the vector from P1 to P2.
     TPoint point1 = {5., 6., 3.};
     TPoint point2 = {2., 1., 1.};
-    TDirection direction = point2 - point1;
-    ASSERT_TRUE(direction.isValid());
-    point1 += direction;
+    TVector vector = point2 - point1;
+    ASSERT_TRUE(vector.isValid());
+    point1 += vector;
 
     ASSERT_EQ(point2, point1);
     ASSERT_TRUE(point1.isValid());
