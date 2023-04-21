@@ -103,6 +103,7 @@ TEST(TTransformation, CombineTransformation) {
     ASSERT_EQ(trafo.transform(vec), vec);
     ASSERT_EQ(trafo.inverseTransform(vec), vec);
 }
+
 TEST(TTransformation, MakeScaleFromOriginWithSimpleTrafos) {
     TVector in{4, 11, 0.2};
     TPoint scaleOrigin{51, -9, 83};
@@ -130,4 +131,76 @@ TEST(TTransformation, MakeScaleFromOriginWithSimpleTrafos) {
     ASSERT_EQ(trafoCompare.transform(trafoCompare.inverseTransform(vec)), vec);
     ASSERT_EQ(trafoCompare.inverseTransform(trafoCompare.transform(pt)), pt);
     ASSERT_EQ(trafoCompare.transform(trafoCompare.inverseTransform(pt)), pt);
+}
+
+TEST(TTransformation, RotationAroundX) {
+    TVector x{1, 0, 0};
+    TVector y{0, 1, 0};
+    TVector z{0, 0, 1};
+    auto halfRotate = TTransformation::AxisRotate(M_PI, 0);
+
+    ASSERT_EQ(halfRotate.transform(x), TVector(1, 0, 0));
+    ASSERT_EQ(halfRotate.transform(y), TVector(0, -1, 0));
+    ASSERT_EQ(halfRotate.transform(z), TVector(0, 0, -1));
+
+    auto quaterRotate = TTransformation::AxisRotate(M_PI_2, 0);
+
+    ASSERT_EQ(quaterRotate.transform(x), TVector(1, 0, 0));
+    ASSERT_EQ(quaterRotate.transform(y), TVector(0, 0, 1));
+    ASSERT_EQ(quaterRotate.transform(z), TVector(0, -1, 0));
+
+    ASSERT_EQ(halfRotate.inverseTransform(halfRotate.transform(x)), x);
+    ASSERT_EQ(halfRotate.transform(halfRotate.inverseTransform(y)), y);
+    ASSERT_EQ(halfRotate.inverseTransform(halfRotate.transform(z)), z);
+    ASSERT_EQ(quaterRotate.transform(quaterRotate.inverseTransform(x)), x);
+    ASSERT_EQ(quaterRotate.inverseTransform(quaterRotate.transform(y)), y);
+    ASSERT_EQ(quaterRotate.transform(quaterRotate.inverseTransform(z)), z);
+}
+
+TEST(TTransformation, RotationAroundY) {
+    TVector x{1, 0, 0};
+    TVector y{0, 1, 0};
+    TVector z{0, 0, 1};
+    auto halfRotate = TTransformation::AxisRotate(M_PI, 1);
+
+    ASSERT_EQ(halfRotate.transform(x), TVector(-1, 0, 0));
+    ASSERT_EQ(halfRotate.transform(y), TVector(0, 1, 0));
+    ASSERT_EQ(halfRotate.transform(z), TVector(0, 0, -1));
+
+    auto quaterRotate = TTransformation::AxisRotate(M_PI_2, 1);
+
+    ASSERT_EQ(quaterRotate.transform(x), TVector(0, 0, -1));
+    ASSERT_EQ(quaterRotate.transform(y), TVector(0, 1, 0));
+    ASSERT_EQ(quaterRotate.transform(z), TVector(1, 0, 0));
+
+    ASSERT_EQ(halfRotate.inverseTransform(halfRotate.transform(x)), x);
+    ASSERT_EQ(halfRotate.transform(halfRotate.inverseTransform(y)), y);
+    ASSERT_EQ(halfRotate.inverseTransform(halfRotate.transform(z)), z);
+    ASSERT_EQ(quaterRotate.transform(quaterRotate.inverseTransform(x)), x);
+    ASSERT_EQ(quaterRotate.inverseTransform(quaterRotate.transform(y)), y);
+    ASSERT_EQ(quaterRotate.transform(quaterRotate.inverseTransform(z)), z);
+}
+
+TEST(TTransformation, RotationAroundZ) {
+    TVector x{1, 0, 0};
+    TVector y{0, 1, 0};
+    TVector z{0, 0, 1};
+    auto halfRotate = TTransformation::AxisRotate(M_PI, 2);
+
+    ASSERT_EQ(halfRotate.transform(x), TVector(-1, 0, 0));
+    ASSERT_EQ(halfRotate.transform(y), TVector(0, -1, 0));
+    ASSERT_EQ(halfRotate.transform(z), TVector(0, 0, 1));
+
+    auto quaterRotate = TTransformation::AxisRotate(M_PI_2, 2);
+
+    ASSERT_EQ(quaterRotate.transform(x), TVector(0, 1, 0));
+    ASSERT_EQ(quaterRotate.transform(y), TVector(-1, 0, 0));
+    ASSERT_EQ(quaterRotate.transform(z), TVector(0, 0, 1));
+
+    ASSERT_EQ(halfRotate.inverseTransform(halfRotate.transform(x)), x);
+    ASSERT_EQ(halfRotate.transform(halfRotate.inverseTransform(y)), y);
+    ASSERT_EQ(halfRotate.inverseTransform(halfRotate.transform(z)), z);
+    ASSERT_EQ(quaterRotate.transform(quaterRotate.inverseTransform(x)), x);
+    ASSERT_EQ(quaterRotate.inverseTransform(quaterRotate.transform(y)), y);
+    ASSERT_EQ(quaterRotate.transform(quaterRotate.inverseTransform(z)), z);
 }
