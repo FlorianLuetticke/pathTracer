@@ -45,16 +45,18 @@ class TTransformation {
         return ret;
     }
 
-    static TTransformation AxisRotate(double angle, int axis = 0) {
+    static TTransformation AxisRotate(double angle, int axis) {
         TTransformation ret;
-        // for (size_t i = 0; i < 3; ++i) {
-        //     ret.mat(i, i) = in.underlying()[i];
-        //     ret.invTransMat(i, i) = 1 / in.underlying()[i];
 
-        //     ret.mat(i, 3) = origin.underlying()[i] * (1. -
-        //     in.underlying()[i]); ret.invTransMat(3, i) =
-        //         origin.underlying()[i] * (1. - 1 / in.underlying()[i]);
-        // }
+        ret.mat(axis, axis) = 1;
+        auto ax1 = (axis + 1) % 3;
+        auto ax2 = (axis + 2) % 3;
+        ret.mat(ax1, ax1) = std::cos(angle);
+        ret.mat(ax2, ax2) = std::cos(angle);
+        ret.mat(ax1, ax2) = -std::sin(angle);
+        ret.mat(ax2, ax1) = std::sin(angle);
+        ret.mat(3, 3) = 1;
+        ret.invTransMat = ret.mat;
         return ret;
     }
 
