@@ -157,6 +157,24 @@ class TMat4 {
     }
     bool operator!=(const TMat4 &other) const { return not(*this == other); }
 
+    void calculateOffsetFrom3x3(const TVec4 &in) {
+        for (size_t i = 0; i < 3; ++i) {
+            _data[i][3] = in[i];
+            for (size_t j = 0; j < 3; ++j) {
+                _data[i][3] -= _data[i][j] * in[j];
+            }
+        }
+    }
+
+    void calculateInverseOffsetFrom3x3(const TVec4 &in) {
+        for (size_t i = 0; i < 3; ++i) {
+            _data[3][i] = in[i];
+            for (size_t j = 0; j < 3; ++j) {
+                _data[3][i] -= _data[j][i] * in[j];
+            }
+        }
+    }
+
     friend std::ostream &operator<<(std::ostream &os, const TMat4 &mat) {
         os << "[";
         for (size_t i = 0; i < 4; ++i) {
