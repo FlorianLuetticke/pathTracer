@@ -204,3 +204,69 @@ TEST(TTransformation, RotationAroundZ) {
     ASSERT_EQ(quaterRotate.inverseTransform(quaterRotate.transform(y)), y);
     ASSERT_EQ(quaterRotate.transform(quaterRotate.inverseTransform(z)), z);
 }
+
+TEST(TTransformation, RotationAroundDifferentOrigin) {
+    TPoint x{1, 0, 0};
+    TPoint y{0, 1, 0};
+    TPoint z{0, 0, 1};
+    TPoint rotOrigin{1, 2, 3};
+    for (int axis = 0; axis < 3; ++axis) {
+        for (double angle = 0; angle < 3.21; angle += 0.1) {
+            auto test = TTransformation::AxisRotate(angle, axis, rotOrigin);
+
+            TPoint origin{0, 0, 0};
+            auto a = TTransformation::Translation(rotOrigin - origin);
+            auto b = TTransformation::AxisRotate(angle, axis);
+            auto c = TTransformation::Translation(origin - rotOrigin);
+            auto reference = a * (b * c);
+
+            ASSERT_EQ(test.transform(x), reference.transform(x));
+            ASSERT_EQ(test.transform(y), reference.transform(y));
+            ASSERT_EQ(test.transform(z), reference.transform(z));
+            ASSERT_EQ(test.inverseTransform(x), reference.inverseTransform(x));
+            ASSERT_EQ(test.inverseTransform(y), reference.inverseTransform(y));
+            ASSERT_EQ(test.inverseTransform(z), reference.inverseTransform(z));
+        }
+    }
+}
+/**
+ * We use the definition from english wikipedia
+ * (https://en.wikipedia.org/wiki/Rotation_matrix#General_rotations)
+ *
+ * R=Rz(gamma)Ry(beta)Rx(alpha)
+ */
+TEST(TTransformation, EulerRotate) {
+    TPoint x{1, 0, 0};
+    TPoint y{0, 1, 0};
+    TPoint z{0, 0, 1};
+    TPoint rotOrigin{1, 2, 3};
+
+    for (double gamma = 0; gamma < 3.21; gamma += 0.1) {
+        for (double beta = 0; beta < 3.21; beta += 0.1) {
+            for (double alpha = 0; alpha < 3.21; alpha += 0.1) {
+                auto test =
+                    TTransformation::EulerRotate(alpha, beta, gamma, rotOrigin);
+
+                TPoint origin{0, 0, 0};
+                auto a = TTransformation::Translation(rotOrigin - origin);
+                auto Rz = TTransformation::AxisRotate(gamma, 2);
+                auto Ry = TTransformation::AxisRotate(beta, 1);
+                auto Rx = TTransformation::AxisRotate(alpha, 0);
+                auto c = TTransformation::Translation(origin - rotOrigin);
+                auto reference = a * Rz * Ry * Rx * c;
+
+                ASSERT_EQ(test.transform(x), reference.transform(x))
+                    << "alpha " << alpha << " beta " << beta << " gamma "
+                    << gamma;
+                ASSERT_EQ(test.transform(y), reference.transform(y));
+                ASSERT_EQ(test.transform(z), reference.transform(z));
+                ASSERT_EQ(test.inverseTransform(x),
+                          reference.inverseTransform(x));
+                ASSERT_EQ(test.inverseTransform(y),
+                          reference.inverseTransform(y));
+                ASSERT_EQ(test.inverseTransform(z),
+                          reference.inverseTransform(z));
+            }
+        }
+    }
+}
