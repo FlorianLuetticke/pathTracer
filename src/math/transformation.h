@@ -72,7 +72,7 @@ class TTransformation {
         const double sbsa = sb * sa, sbca = sb * ca;
         TMat4 rot;
         rot(0, 0) = cg * cb;
-        rot(1, 0) = cg * sbsa - sg * ca;
+        rot(0, 1) = cg * sbsa - sg * ca;
         rot(0, 2) = cg * sbca + sg * sa;
         rot(1, 0) = sg * cb;
         rot(1, 1) = sg * sbsa + cg * ca;
