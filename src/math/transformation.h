@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <cmath>
+#include <iostream>
 #include <ostream>
 #include <stdexcept>
 
@@ -45,7 +46,8 @@ class TTransformation {
         return ret;
     }
 
-    static TTransformation AxisRotate(double angle, int axis) {
+    static TTransformation AxisRotate(double angle, int axis,
+                                      const TPoint &origin = {0., 0., 0.}) {
         TTransformation ret;
 
         ret.mat(axis, axis) = 1;
@@ -57,6 +59,31 @@ class TTransformation {
         ret.mat(ax2, ax1) = std::sin(angle);
         ret.mat(3, 3) = 1;
         ret.invTransMat = ret.mat;
+        ret.mat.calculateOffsetFrom3x3(origin.underlying());
+        ret.invTransMat.calculateInverseOffsetFrom3x3(origin.underlying());
+        return ret;
+    }
+
+    static TTransformation EulerRotate(double alpha, double beta, double gamma,
+                                       const TPoint &origin = {0., 0., 0.}) {
+        const double ca = cos(alpha), sa = sin(alpha);
+        const double cb = cos(beta), sb = sin(beta);
+        const double cg = cos(gamma), sg = sin(gamma);
+        const double sbsa = sb * sa, sbca = sb * ca;
+        TMat4 rot;
+        rot(0, 0) = cg * cb;
+        rot(1, 0) = cg * sbsa - sg * ca;
+        rot(0, 2) = cg * sbca + sg * sa;
+        rot(1, 0) = sg * cb;
+        rot(1, 1) = sg * sbsa + cg * ca;
+        rot(1, 2) = sg * sbca - cg * sa;
+        rot(2, 0) = -sb;
+        rot(2, 1) = cb * sa;
+        rot(2, 2) = cb * ca;
+
+        TTransformation ret{rot, rot};
+        ret.mat.calculateOffsetFrom3x3(origin.underlying());
+        ret.invTransMat.calculateInverseOffsetFrom3x3(origin.underlying());
         return ret;
     }
 
