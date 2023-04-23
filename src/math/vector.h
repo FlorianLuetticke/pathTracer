@@ -64,6 +64,11 @@ class TVector {
     TVector operator-() const { return {-val[0], -val[1], -val[2]}; }
 
     double norm() const { return val.norm3(); }
+
+    TVector normed() const {
+        double invNorm = 1. / val.norm3();
+        return {invNorm * val[0], invNorm * val[1], invNorm * val[2]};
+    }
     double dot(const TVector& other) const { return val.dot3(other.val); }
     TVector cross(const TVector& other) const {
         TVector ret;
