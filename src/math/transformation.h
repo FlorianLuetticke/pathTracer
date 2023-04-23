@@ -14,6 +14,32 @@ class TTransformation {
     TMat4 mat;
     TMat4 invTransMat;
 
+    void calculateInvertedTranspose3x3() {
+        double determinant =
+            +mat(0, 0) * (mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2)) -
+            mat(0, 1) * (mat(1, 0) * mat(2, 2) - mat(1, 2) * mat(2, 0)) +
+            mat(0, 2) * (mat(1, 0) * mat(2, 1) - mat(1, 1) * mat(2, 0));
+        double invdet = 1 / determinant;
+        invTransMat(0, 0) =
+            (mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2)) * invdet;
+        invTransMat(1, 0) =
+            -(mat(0, 1) * mat(2, 2) - mat(0, 2) * mat(2, 1)) * invdet;
+        invTransMat(2, 0) =
+            (mat(0, 1) * mat(1, 2) - mat(0, 2) * mat(1, 1)) * invdet;
+        invTransMat(0, 1) =
+            -(mat(1, 0) * mat(2, 2) - mat(1, 2) * mat(2, 0)) * invdet;
+        invTransMat(1, 1) =
+            (mat(0, 0) * mat(2, 2) - mat(0, 2) * mat(2, 0)) * invdet;
+        invTransMat(2, 1) =
+            -(mat(0, 0) * mat(1, 2) - mat(1, 0) * mat(0, 2)) * invdet;
+        invTransMat(0, 2) =
+            (mat(1, 0) * mat(2, 1) - mat(2, 0) * mat(1, 1)) * invdet;
+        invTransMat(1, 2) =
+            -(mat(0, 0) * mat(2, 1) - mat(2, 0) * mat(0, 1)) * invdet;
+        invTransMat(2, 2) =
+            (mat(0, 0) * mat(1, 1) - mat(1, 0) * mat(0, 1)) * invdet;
+    }
+
    public:
     TTransformation(){};
     TTransformation(const TMat4 &mat_, const TMat4 &invTransMat_)

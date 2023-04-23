@@ -4,3 +4,5 @@ PathTracerV2.code-workspace
 compile_commands.json
 test/mathTest/mathTest
 **/.cache/*
+test/sceneTest/sceneTest
+test/sceneTest/test.png
