@@ -3,7 +3,7 @@
 #include "fmt/format.h"
 #include "fmt/ostream.h"
 #include "gtest/gtest.h"
-#include "mat4.h"
+#include "math/mat4.h"
 
 TEST(TMat4, Create) {
     TMat4 mat1;
