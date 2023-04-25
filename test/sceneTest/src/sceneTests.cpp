@@ -19,3 +19,45 @@ TEST(TScene, CanAdd) {
 
     SUCCEED();
 }
+
+TEST(TScene, findHitFindsIntersection) {
+    TScene scene;
+    auto hit = scene.findHit(TRay(TPoint(0, 2, 1), TVector(1., 0., 0.)));
+    ASSERT_FALSE(hit);
+    scene.add(TSphere(1.2, TPoint(3, 2, 1)));
+
+    hit = scene.findHit(TRay(TPoint(0, 2, 1), TVector(1., 0., 0.)));
+    ASSERT_TRUE(hit);
+
+    ASSERT_EQ(hit->normal, TVector(-1., 0, 0));
+}
+
+TEST(TScene, findHitHandlesMultipleSpheres) {
+    TScene scene;
+
+    scene.add(TSphere(1.2, TPoint(3, 2, 1)));
+    scene.add(TSphere(1.2, TPoint(3, -2, 1)));
+
+    auto hit = scene.findHit(TRay(TPoint(0, 2, 1), TVector(1., 0., 0.)));
+    ASSERT_TRUE(hit);
+    ASSERT_EQ(hit->normal, TVector(-1., 0, 0));
+    ASSERT_EQ(hit->intersection, TPoint(1.8, 2, 1));
+
+    hit = scene.findHit(TRay(TPoint(0, -2, 1), TVector(1., 0., 0.)));
+
+    ASSERT_TRUE(hit);
+    ASSERT_EQ(hit->normal, TVector(-1., 0, 0));
+    ASSERT_EQ(hit->intersection, TPoint(1.8, -2, 1));
+}
+
+TEST(TScene, findHitFindsClosestHit) {
+    TScene scene;
+
+    scene.add(TSphere(1.2, TPoint(3, 2, 1)));
+    scene.add(TSphere(1.2, TPoint(2, 2, 1)));
+
+    auto hit = scene.findHit(TRay(TPoint(0, 2, 1), TVector(1., 0., 0.)));
+    ASSERT_TRUE(hit);
+    ASSERT_EQ(hit->normal, TVector(-1., 0, 0));
+    ASSERT_EQ(hit->intersection, TPoint(0.8, 2, 1));
+}
