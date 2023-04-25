@@ -38,7 +38,7 @@ class TSphere {
             return std::nullopt;
         }
         sHitInfo ret;
-        ret.intersection = ray.at(hit);
+        ret.intersection = ray.origin() + hit * dirNormed;
 
         ret.normal = (ret.intersection - _center).normed();
         return ret;
