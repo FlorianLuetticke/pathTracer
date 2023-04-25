@@ -98,3 +98,15 @@ TEST(TPoint, SubtractPointsToGetDirecton) {
     ASSERT_TRUE(point1.isValid());
     ASSERT_TRUE(point2.isValid());
 }
+
+TEST(TPoint, squaredDistance) {
+    TPoint point = {5., 6., 3.};
+    TPoint point2 = {1., 2., 3.};
+    auto val = point.distanceSquaredTo(point2);
+    ASSERT_EQ(val, 32.);
+
+    point.z() = 21.;
+    auto vec = point2 - point;
+
+    ASSERT_EQ(point.distanceSquaredTo(point2), vec.dot(vec));
+}
