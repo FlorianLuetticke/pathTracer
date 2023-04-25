@@ -62,6 +62,10 @@ class TPoint {
     bool operator!=(const TPoint& other) const {
         return this->val != other.val;
     }
+    double distanceSquaredTo(const TPoint& other) const {
+        TVec4 data = val - other.val;
+        return data.dot3(data);
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const TPoint& dir) {
         os << "P[" << dir.x() << ", " << dir.y() << ", " << dir.z();
