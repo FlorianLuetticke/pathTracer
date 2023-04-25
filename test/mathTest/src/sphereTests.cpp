@@ -76,3 +76,22 @@ TEST(TSphere, NoIntersectionWhenStartingBehind) {
     auto test = sphere.intersect(TRay({4, 0, 0}, {1, 0, 0}));
     ASSERT_FALSE(test);
 }
+
+TEST(TSphere, CreateWithOffset) {
+    TSphere sphere{3.4, TPoint(10, 2, 7)};
+    SUCCEED();
+}
+
+TEST(TSphere, HitWithOffset) {
+    TSphere sphere{3.4, TPoint(10, 2, 7)};
+    auto test = sphere.intersect(TRay({6, 2, 7}, {1, 0, 0}));
+    ASSERT_TRUE(test);
+    ASSERT_EQ(test->intersection, TPoint(10 - 3.4, 2, 7));
+    ASSERT_EQ(test->normal, TVector(-1, 0, 0));
+
+    ASSERT_FALSE(sphere.intersect(TRay({6, 7, 2}, {1, 0, 0})));
+    ASSERT_TRUE(sphere.intersect(TRay({6, -1.3, 7}, {1, 0, 0})));
+    ASSERT_TRUE(sphere.intersect(TRay({6, 5.3, 7}, {1, 0, 0})));
+    ASSERT_TRUE(sphere.intersect(TRay({6, 2, 10.3}, {1, 0, 0})));
+    ASSERT_TRUE(sphere.intersect(TRay({6, 2, 3.7}, {1, 0, 0})));
+}
