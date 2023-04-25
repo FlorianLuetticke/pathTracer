@@ -7,22 +7,24 @@
 #include <stdexcept>
 
 #include "hitInfo.h"
-#include "ray.h"
-#include "transformation.h"
+#include "math/ray.h"
+#include "math/transformation.h"
 
 class TSphere {
-    double radius;
+    double _radius;
+    TPoint _center;
 
    public:
-    TSphere(double radius_ = 0) : radius(radius_){};
+    TSphere(double radius_ = 0) : _radius(radius_), _center{0, 0, 0} {};
+    TSphere(double radius_, const TPoint& center)
+        : _radius(radius_), _center(center){};
 
     std::optional<sHitInfo> intersect(const TRay& ray) const {
-        TPoint center{0, 0, 0};
         auto dirNormed = ray.direction().normed();
-        auto cent2Orig = ray.origin() - center;
+        auto cent2Orig = ray.origin() - _center;
         double x = dirNormed.dot(cent2Orig);
 
-        double y = (cent2Orig.dot(cent2Orig) - radius * radius);
+        double y = (cent2Orig.dot(cent2Orig) - _radius * _radius);
         if (x * x - y < 0) {
             return std::nullopt;
         }
@@ -38,7 +40,7 @@ class TSphere {
         sHitInfo ret;
         ret.intersection = ray.at(hit);
 
-        ret.normal = (ret.intersection - center).normed();
+        ret.normal = (ret.intersection - _center).normed();
         return ret;
     }
 };
