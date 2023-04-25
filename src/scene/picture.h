@@ -7,12 +7,12 @@
 
 #include "math/ray.h"
 #include "math/vector.h"
-struct sLightAmount {
+struct sColor {
     double r = 0;
     double g = 0;
     double b = 0;
 
-    sLightAmount& operator+=(const sLightAmount& other) {
+    sColor& operator+=(const sColor& other) {
         r += other.r;
         g += other.g;
         b += other.b;
@@ -25,16 +25,14 @@ class TPicture {
     size_t _nrow;
     size_t _ncol;
 
-    std::vector<sLightAmount> _data;
+    std::vector<sColor> _data;
 
    public:
     TPicture(size_t rows, size_t cols) : _nrow(rows), _ncol(cols) {
         _data.resize(_nrow * _ncol);
     };
 
-    sLightAmount& at(size_t row, size_t col) {
-        return _data[_ncol * row + col];
-    }
+    sColor& at(size_t row, size_t col) { return _data[_ncol * row + col]; }
 
-    void savePNG(std::string filename);
+    void savePNG(std::string filename, bool linear = false) const;
 };
