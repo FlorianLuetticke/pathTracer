@@ -1,4 +1,5 @@
 #include <cmath>
+#include <random>
 
 #include "fmt/format.h"
 #include "fmt/ostream.h"
@@ -263,5 +264,64 @@ TEST(TTransformation, EulerRotate) {
                 ASSERT_EQ(test.inverseTransform(z), reference.inverseTransform(z));
             }
         }
+    }
+}
+
+TEST(TTransformation, BaseChange) {
+    TVector x{1, 2, 3};
+    TVector y{3, 2, 1};
+    TVector z = x.cross(y).normed();
+
+    auto trafo = TTransformation::BaseChange(x, y, z);
+
+    ASSERT_EQ(trafo.inverseTransform(TVector(1, 0, 0)), x);
+    ASSERT_EQ(trafo.inverseTransform(TVector(0, 1, 0)), y);
+    ASSERT_EQ(trafo.inverseTransform(TVector(0, 0, 1)), z);
+
+    ASSERT_EQ(trafo.transform(x), TVector(1, 0, 0));
+    ASSERT_EQ(trafo.transform(y), TVector(0, 1, 0));
+    ASSERT_EQ(trafo.transform(z), TVector(0, 0, 1));
+}
+
+TEST(TTransformation, BaseChangeWithTranslationForPoly) {
+    TPoint a{3, 1, 0};
+    TPoint b{3, 3, 0};
+
+    TPoint c{3, 2, 2};
+
+    TVector x = b - a;
+    TVector y = c - a;
+    TVector z = x.cross(y).normed();
+
+    auto trafo = TTransformation::BaseChangeWithTranslation(x, y, z, a);
+
+    ASSERT_EQ(trafo.inverseTransform(TVector(1, 0, 0)), b - a);
+    ASSERT_EQ(trafo.inverseTransform(TVector(0, 1, 0)), c - a);
+    ASSERT_EQ(trafo.inverseTransform(TVector(0, 0, 1)), z);
+    ASSERT_EQ(trafo.inverseTransform(TPoint(0, 0, 0)), a);
+    ASSERT_EQ(trafo.inverseTransform(TPoint(1, 0, 0)), b);
+    ASSERT_EQ(trafo.inverseTransform(TPoint(0, 1, 0)), c);
+    ASSERT_EQ(trafo.inverseTransform(TPoint(0, 1, 1)), c + z);
+
+    ASSERT_EQ(trafo.transform(a), TPoint(0, 0, 0));
+    ASSERT_EQ(trafo.transform(b), TPoint(1, 0, 0));
+    ASSERT_EQ(trafo.transform(c), TPoint(0, 1, 0));
+    ASSERT_EQ(trafo.transform(x), TVector(1, 0, 0));
+    ASSERT_EQ(trafo.transform(y), TVector(0, 1, 0));
+    ASSERT_EQ(trafo.transform(z), TVector(0, 0, 1));
+    ASSERT_EQ(trafo.transform(c + z), TPoint(0, 1, 1));
+
+    std::mt19937 generator;
+    std::uniform_real_distribution<double> distribution(0.2, 1.2);
+
+    for (int i = 0; i < 1000; ++i) {
+        TPoint testPoint{distribution(generator), distribution(generator), distribution(generator)};
+        TVector testVec{distribution(generator), distribution(generator), distribution(generator)};
+
+        ASSERT_EQ(trafo.transform(trafo.inverseTransform(testPoint)), testPoint);
+        ASSERT_EQ(trafo.inverseTransform(trafo.transform(testPoint)), testPoint);
+
+        ASSERT_EQ(trafo.transform(trafo.inverseTransform(testVec)), testVec);
+        ASSERT_EQ(trafo.inverseTransform(trafo.transform(testVec)), testVec);
     }
 }
