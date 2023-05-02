@@ -4,24 +4,24 @@
 #include "fmt/format.h"
 #include "vector.h"
 class TPoint {
-    TVec4 val;
+    TVec4 _val;
 
    public:
-    TPoint() { val[3] = 1.; };
-    TPoint(double x, double y, double z) : val(x, y, z, 1.){};
-    TPoint(const TVec4& in) : val(in) { val[3] = 1.; };
-    double& x() { return val[0]; }
-    double& y() { return val[1]; }
-    double& z() { return val[2]; }
-    const double& x() const { return val[0]; }
-    const double& y() const { return val[1]; }
-    const double& z() const { return val[2]; }
-    const TVec4& underlying() const { return val; }
+    TPoint() { _val[3] = 1.; };
+    TPoint(double x, double y, double z) : _val(x, y, z, 1.){};
+    TPoint(const TVec4& in) : _val(in) { _val[3] = 1.; };
+    double& x() { return _val[0]; }
+    double& y() { return _val[1]; }
+    double& z() { return _val[2]; }
+    const double& x() const { return _val[0]; }
+    const double& y() const { return _val[1]; }
+    const double& z() const { return _val[2]; }
+    const TVec4& underlying() const { return _val; }
 
-    bool isValid() { return val[3] == 1.; }
+    bool isValid() { return _val[3] == 1.; }
 
     TPoint& operator+=(const TVector& other) {
-        val += other.val;
+        _val += other._val;
         return *this;
     }
     TPoint operator+(const TVector& other) const {
@@ -37,7 +37,7 @@ class TPoint {
     }
 
     TPoint& operator-=(const TVector& other) {
-        val -= other.val;
+        _val -= other._val;
         return *this;
     }
     TPoint operator-(const TVector& other) const {
@@ -52,23 +52,23 @@ class TPoint {
     // }
 
     friend TVector operator-(const TPoint& lhs, const TPoint& rhs) {
-        TVec4 data = lhs.val - rhs.val;
+        TVec4 data = lhs._val - rhs._val;
         return TVector(data[0], data[1], data[2]);
     }
 
-    bool operator==(const TPoint& other) const { return this->val == other.val; }
-    bool operator!=(const TPoint& other) const { return this->val != other.val; }
+    bool operator==(const TPoint& other) const { return this->_val == other._val; }
+    bool operator!=(const TPoint& other) const { return this->_val != other._val; }
     double distanceSquaredTo(const TPoint& other) const {
-        TVec4 data = val - other.val;
+        TVec4 data = _val - other._val;
         return data.dot3(data);
     }
 
     friend std::ostream& operator<<(std::ostream& os, const TPoint& dir) {
         os << "P[" << dir.x() << ", " << dir.y() << ", " << dir.z();
-        if (dir.val[3] == 1.) {
+        if (dir._val[3] == 1.) {
             os << "]";
         } else {
-            os << " Error " << dir.val[3] << "]";
+            os << " Error " << dir._val[3] << "]";
         }
         return os;
     }
