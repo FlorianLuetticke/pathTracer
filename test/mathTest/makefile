@@ -1,13 +1,13 @@
 TARGET_EXEC ?= mathTest
 
-BUILD_DIR ?= ./build
+BUILD_DIR ?= ./build/b/u/i/l/d
 SRC_DIRS ?= ./src  ../../src
 
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
-INC_DIRS := $(shell find $(SRC_DIRS) -type d) -I /usr/local/include/
+INC_DIRS := $(shell find $(SRC_DIRS) -maxdepth 0 -type d) /usr/local/include/
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -O3  -std=c++17

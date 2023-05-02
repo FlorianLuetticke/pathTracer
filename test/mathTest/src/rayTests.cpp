@@ -1,8 +1,8 @@
 #include <cmath>
 
 #include "gtest/gtest.h"
-#include "ray.h"
-#include "vector.h"
+#include "math/ray.h"
+#include "math/vector.h"
 
 TEST(TRay, Create) {
     TRay ray;
