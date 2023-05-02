@@ -16,8 +16,7 @@ class TSphere {
 
    public:
     TSphere(double radius_ = 0) : _radius(radius_), _center{0, 0, 0} {};
-    TSphere(double radius_, const TPoint& center)
-        : _radius(radius_), _center(center){};
+    TSphere(double radius_, const TPoint& center) : _radius(radius_), _center(center){};
 
     std::optional<sHitInfo> intersect(const TRay& ray) const {
         auto dirNormed = ray.direction().normed();

@@ -69,9 +69,7 @@ class TVec4 {
         return ret;
     }
 
-    TVec4 operator-() const {
-        return {-_data[0], -_data[1], -_data[2], -_data[3]};
-    }
+    TVec4 operator-() const { return {-_data[0], -_data[1], -_data[2], -_data[3]}; }
 
     double dot(const TVec4 &other) const {
         double dot = 0;
@@ -114,8 +112,7 @@ class TVec4 {
         for (size_t i = 0; i < 4; ++i) {
             auto x = _data[i];
             auto y = other._data[i];
-            if (std::abs(x - y) >
-                1e-12 * std::max(1., std::max(std::abs(x), std::abs(y)))) {
+            if (std::abs(x - y) > 1e-12 * std::max(1., std::max(std::abs(x), std::abs(y)))) {
                 return false;
             }
         }
@@ -124,8 +121,8 @@ class TVec4 {
     bool operator!=(const TVec4 &other) const { return not(*this == other); }
 
     friend std::ostream &operator<<(std::ostream &os, const TVec4 &dir) {
-        os << "[" << dir._data[0] << ", " << dir._data[1] << ", "
-           << dir._data[2] << ", " << dir._data[3] << "]";
+        os << "[" << dir._data[0] << ", " << dir._data[1] << ", " << dir._data[2] << ", "
+           << dir._data[3] << "]";
         return os;
     }
 };

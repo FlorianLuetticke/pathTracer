@@ -22,18 +22,15 @@ int main() {
     for (size_t row = 0; row < cam.rows(); ++row) {
         for (size_t col = 0; col < cam.columns(); ++col) {
             for (size_t sample = 0; sample < nSamples; ++sample) {
-                auto ray = cam.castRay(row, col, distribution(generator),
-                                       distribution(generator));
+                auto ray = cam.castRay(row, col, distribution(generator), distribution(generator));
                 auto optHit = scene.findHit(ray);
                 if (optHit) {
-                    auto distance =
-                        (optHit->intersection - TPoint(0, 0, 0)).norm() - 16.;
+                    auto distance = (optHit->intersection - TPoint(0, 0, 0)).norm() - 16.;
                     cam.colorAt(row, col) +=
                         // sColor{distance, distance, distance};
                         sColor{1 + optHit->normal.x(), 1 + optHit->normal.y(),
                                1 + optHit->normal.z()};
-                    cam2.colorAt(row, col) +=
-                        sColor{distance, distance, distance};
+                    cam2.colorAt(row, col) += sColor{distance, distance, distance};
                     // std::cout << row << ", " << col << ": " << optHit->normal
                     //           << " " << optHit->intersection << " distance "
                     //           << (optHit->intersection - TPoint(0, 0,

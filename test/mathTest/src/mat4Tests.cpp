@@ -8,8 +8,7 @@
 TEST(TMat4, Create) {
     TMat4 mat1;
 
-    TMat4 mat2{{std::array<double, 3>{1., 2., 3.}, {4., 5., 6.}, {7., 8., 9.}},
-               {10., 11., 12.}};
+    TMat4 mat2{{std::array<double, 3>{1., 2., 3.}, {4., 5., 6.}, {7., 8., 9.}}, {10., 11., 12.}};
 
     TMat4 mat3{{std::array<double, 4>{1., 2., 3., 4.},
                 {5., 6., 7., 8.},
@@ -72,8 +71,7 @@ TEST(TMat4, doubleTransposeCancles) {
 
     for (size_t i = 0; i < 4; ++i) {
         for (size_t j = 0; j < 4; ++j) {
-            ASSERT_EQ(mat1.transpose().transpose()(i, j),
-                      double(4 * i + j + 1));
+            ASSERT_EQ(mat1.transpose().transpose()(i, j), double(4 * i + j + 1));
         }
     }
 }
@@ -130,13 +128,11 @@ TEST(TMat4, MatrixMultiplication) {
 
     ASSERT_EQ(mat1 * mat2, result);
 
-    ASSERT_EQ(TMat4(mat2.transpose()) * TMat4(mat1.transpose()),
-              TMat4(result.transpose()));
+    ASSERT_EQ(TMat4(mat2.transpose()) * TMat4(mat1.transpose()), TMat4(result.transpose()));
 
     ASSERT_EQ(mat1_1 * mat2, result2);
 
-    ASSERT_EQ(TMat4(mat2.transpose()) * TMat4(mat1_1.transpose()),
-              TMat4(result2.transpose()));
+    ASSERT_EQ(TMat4(mat2.transpose()) * TMat4(mat1_1.transpose()), TMat4(result2.transpose()));
 }
 
 TEST(TMat4, MatrixMultiplicationWithTranspose) {
@@ -157,10 +153,8 @@ TEST(TMat4, MatrixMultiplicationWithTranspose) {
                   {171, 146, 172, 268},
                   {105, 169, 128, 169}}};
 
-    ASSERT_EQ(mat2.transpose() * TMat4(mat1.transpose()),
-              TMat4(result.transpose()));
-    ASSERT_EQ(TMat4(mat2.transpose()) * mat1.transpose(),
-              TMat4(result.transpose()));
+    ASSERT_EQ(mat2.transpose() * TMat4(mat1.transpose()), TMat4(result.transpose()));
+    ASSERT_EQ(TMat4(mat2.transpose()) * mat1.transpose(), TMat4(result.transpose()));
 
     ASSERT_EQ(trMat1.transpose() * TMat4(trMat2.transpose()), result);
     ASSERT_EQ(TMat4(trMat1.transpose()) * trMat2.transpose(), result);

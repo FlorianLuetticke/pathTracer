@@ -28,9 +28,7 @@ class TPicture {
     std::vector<sColor> _data;
 
    public:
-    TPicture(size_t rows, size_t cols) : _nrow(rows), _ncol(cols) {
-        _data.resize(_nrow * _ncol);
-    };
+    TPicture(size_t rows, size_t cols) : _nrow(rows), _ncol(cols) { _data.resize(_nrow * _ncol); };
 
     sColor& at(size_t row, size_t col) { return _data[_ncol * row + col]; }
 

@@ -5,24 +5,24 @@
 #include "vec4.h"
 class TPoint;
 class TVector {
-    TVec4 val;
+    TVec4 _val;
     friend class TPoint;
 
    public:
     TVector(){};
-    TVector(double x, double y, double z) : val(x, y, z, 0.){};
-    TVector(const TVec4& in) : val(in) { val[3] = 0.; };
-    double& x() { return val[0]; }
-    double& y() { return val[1]; }
-    double& z() { return val[2]; }
-    const double& x() const { return val[0]; }
-    const double& y() const { return val[1]; }
-    const double& z() const { return val[2]; }
-    const TVec4& underlying() const { return val; }
-    bool isValid() { return val[3] == 0.; }
+    TVector(double x, double y, double z) : _val(x, y, z, 0.){};
+    TVector(const TVec4& in) : _val(in) { _val[3] = 0.; };
+    double& x() { return _val[0]; }
+    double& y() { return _val[1]; }
+    double& z() { return _val[2]; }
+    const double& x() const { return _val[0]; }
+    const double& y() const { return _val[1]; }
+    const double& z() const { return _val[2]; }
+    const TVec4& underlying() const { return _val; }
+    bool isValid() { return _val[3] == 0.; }
 
     TVector& operator+=(const TVector& other) {
-        val += other.val;
+        _val += other._val;
         return *this;
     }
     TVector operator+(const TVector& other) const {
@@ -32,7 +32,7 @@ class TVector {
     }
 
     TVector& operator-=(const TVector& other) {
-        val -= other.val;
+        _val -= other._val;
         return *this;
     }
     TVector operator-(const TVector& other) const {
@@ -41,7 +41,7 @@ class TVector {
         return ret;
     }
     TVector& operator*=(double scalar) {
-        val *= scalar;
+        _val *= scalar;
         return *this;
     }
 
@@ -51,7 +51,7 @@ class TVector {
         return ret;
     }
     TVector& operator/=(double scalar) {
-        val /= scalar;
+        _val /= scalar;
         return *this;
     }
 
@@ -61,41 +61,37 @@ class TVector {
         return ret;
     }
 
-    TVector operator-() const { return {-val[0], -val[1], -val[2]}; }
+    TVector operator-() const { return {-_val[0], -_val[1], -_val[2]}; }
 
-    double norm() const { return val.norm3(); }
+    double norm() const { return _val.norm3(); }
 
     TVector normed() const {
-        double invNorm = 1. / val.norm3();
-        return {invNorm * val[0], invNorm * val[1], invNorm * val[2]};
+        double invNorm = 1. / _val.norm3();
+        return {invNorm * _val[0], invNorm * _val[1], invNorm * _val[2]};
     }
-    double dot(const TVector& other) const { return val.dot3(other.val); }
+    double dot(const TVector& other) const { return _val.dot3(other._val); }
     TVector cross(const TVector& other) const {
         TVector ret;
-        ret.val = val.cross3(other.val);
+        ret._val = _val.cross3(other._val);
         return ret;
     }
 
-    bool operator==(const TVector& other) const {
-        return this->val == other.val;
-    }
-    bool operator!=(const TVector& other) const {
-        return this->val != other.val;
-    }
+    bool operator==(const TVector& other) const { return this->_val == other._val; }
+    bool operator!=(const TVector& other) const { return this->_val != other._val; }
 
     friend std::ostream& operator<<(std::ostream& os, const TVector& dir) {
         os << "D[" << dir.x() << ", " << dir.y() << ", " << dir.z();
-        if (dir.val[3] == 0.) {
+        if (dir._val[3] == 0.) {
             os << "]";
         } else {
-            os << " Error " << dir.val[3] << "]";
+            os << " Error " << dir._val[3] << "]";
         }
         return os;
     }
 };
 
-inline TVector operator*(double val, const TVector& vec) {
+inline TVector operator*(double _val, const TVector& vec) {
     TVector ret = vec;
-    ret *= val;
+    ret *= _val;
     return ret;
 }

@@ -9,7 +9,7 @@
 #include "vec4.h"
 
 class TMat4 {
-    std::array<std::array<double, 4>, 4> _data;
+    std::array<std::array<double, 4>, 4> data;
 
    public:
     friend class TTransposedView;
@@ -27,7 +27,7 @@ class TMat4 {
 
             for (size_t i = 0; i < 4; ++i) {
                 for (size_t j = 0; j < 4; ++j) {
-                    ret[i] += ref._data[j][i] * in[j];
+                    ret[i] += ref.data[j][i] * in[j];
                 }
             }
             return ret;
@@ -38,7 +38,7 @@ class TMat4 {
             for (size_t i = 0; i < 4; ++i) {
                 for (size_t j = 0; j < 4; ++j) {
                     for (size_t k = 0; k < 4; ++k) {
-                        ret._data[i][j] += ref._data[k][i] * in._data[k][j];
+                        ret.data[i][j] += ref.data[k][i] * in.data[k][j];
                     }
                 }
             }
@@ -46,19 +46,19 @@ class TMat4 {
         }
         const TMat4 &transpose() const { return ref; }
     };
-    TMat4() { _data.fill({0., 0., 0., 0.}); }
+    TMat4() { data.fill({0., 0., 0., 0.}); }
 
-    TMat4(const std::array<std::array<double, 4>, 4> &l) : _data(l) {}
+    TMat4(const std::array<std::array<double, 4>, 4> &l) : data(l) {}
     TMat4(const std::array<std::array<double, 3>, 3> &mat3d,
           const std::array<double, 3> translation) {
         for (size_t i = 0; i < 3; ++i) {
-            std::copy(mat3d[i].begin(), mat3d[i].end(), _data[i].begin());
+            std::copy(mat3d[i].begin(), mat3d[i].end(), data[i].begin());
         }
-        _data[3].fill(0.);
-        _data[0][3] = translation[0];
-        _data[1][3] = translation[1];
-        _data[2][3] = translation[2];
-        _data[3][3] = 1.;
+        data[3].fill(0.);
+        data[0][3] = translation[0];
+        data[1][3] = translation[1];
+        data[2][3] = translation[2];
+        data[3][3] = 1.;
     }
     // could be implemented as "Matrix-like"
     static TMat4 Identity() {
@@ -72,13 +72,13 @@ class TMat4 {
     TMat4(const TTransposedView &in) {
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
-                _data[i][j] = in.ref._data[j][i];
+                data[i][j] = in.ref.data[j][i];
             }
         }
     }
 
-    double &operator()(size_t i, size_t j) { return _data[i][j]; }
-    const double &operator()(size_t i, size_t j) const { return _data[i][j]; }
+    double &operator()(size_t i, size_t j) { return data[i][j]; }
+    const double &operator()(size_t i, size_t j) const { return data[i][j]; }
     TTransposedView transpose() const { return TTransposedView(*this); }
 
     TVec4 operator*(const TVec4 &in) const {
@@ -86,19 +86,19 @@ class TMat4 {
 
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
-                ret[i] += _data[i][j] * in[j];
+                ret[i] += data[i][j] * in[j];
             }
         }
         return ret;
     }
 
     TMat4 &operator*=(const TMat4 &in) {
-        std::array<std::array<double, 4>, 4> old = _data;
+        std::array<std::array<double, 4>, 4> old = data;
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
-                _data[i][j] = 0.;
+                data[i][j] = 0.;
                 for (size_t k = 0; k < 4; ++k) {
-                    _data[i][j] += old[i][k] * in._data[k][j];
+                    data[i][j] += old[i][k] * in.data[k][j];
                 }
             }
         }
@@ -110,7 +110,7 @@ class TMat4 {
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
                 for (size_t k = 0; k < 4; ++k) {
-                    ret._data[i][j] += _data[i][k] * in._data[k][j];
+                    ret.data[i][j] += data[i][k] * in.data[k][j];
                 }
             }
         }
@@ -118,12 +118,12 @@ class TMat4 {
     }
 
     TMat4 &operator*=(const TTransposedView &in) {
-        std::array<std::array<double, 4>, 4> old = _data;
+        std::array<std::array<double, 4>, 4> old = data;
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
-                _data[i][j] = 0.;
+                data[i][j] = 0.;
                 for (size_t k = 0; k < 4; ++k) {
-                    _data[i][j] += old[i][k] * in.ref._data[j][k];
+                    data[i][j] += old[i][k] * in.ref.data[j][k];
                 }
             }
         }
@@ -135,7 +135,7 @@ class TMat4 {
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
                 for (size_t k = 0; k < 4; ++k) {
-                    ret._data[i][j] += _data[i][k] * in.ref._data[j][k];
+                    ret.data[i][j] += data[i][k] * in.ref.data[j][k];
                 }
             }
         }
@@ -145,10 +145,9 @@ class TMat4 {
     bool operator==(const TMat4 &other) const {
         for (size_t i = 0; i < 4; ++i) {
             for (size_t j = 0; j < 4; ++j) {
-                auto x = _data[i][j];
-                auto y = other._data[i][j];
-                if (std::abs(x - y) >
-                    1e-12 * std::max(1., std::max(std::abs(x), std::abs(y)))) {
+                auto x = data[i][j];
+                auto y = other.data[i][j];
+                if (std::abs(x - y) > 1e-12 * std::max(1., std::max(std::abs(x), std::abs(y)))) {
                     return false;
                 }
             }
@@ -159,18 +158,18 @@ class TMat4 {
 
     void calculateOffsetFrom3x3(const TVec4 &in) {
         for (size_t i = 0; i < 3; ++i) {
-            _data[i][3] = in[i];
+            data[i][3] = in[i];
             for (size_t j = 0; j < 3; ++j) {
-                _data[i][3] -= _data[i][j] * in[j];
+                data[i][3] -= data[i][j] * in[j];
             }
         }
     }
 
     void calculateInverseOffsetFrom3x3(const TVec4 &in) {
         for (size_t i = 0; i < 3; ++i) {
-            _data[3][i] = in[i];
+            data[3][i] = in[i];
             for (size_t j = 0; j < 3; ++j) {
-                _data[3][i] -= _data[j][i] * in[j];
+                data[3][i] -= data[j][i] * in[j];
             }
         }
     }

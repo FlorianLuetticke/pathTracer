@@ -14,8 +14,7 @@ class TRay {
 
    public:
     TRay(){};
-    TRay(const TPoint &origin, const TVector &direction)
-        : _origin(origin), _direction(direction){};
+    TRay(const TPoint &origin, const TVector &direction) : _origin(origin), _direction(direction){};
 
     bool operator==(const TRay &other) const {
         return _origin == other._origin && _direction == other._direction;

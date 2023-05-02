@@ -244,8 +244,7 @@ TEST(TTransformation, EulerRotate) {
     for (double gamma = 0; gamma < 3.21; gamma += 0.1) {
         for (double beta = 0; beta < 3.21; beta += 0.1) {
             for (double alpha = 0; alpha < 3.21; alpha += 0.1) {
-                auto test =
-                    TTransformation::EulerRotate(alpha, beta, gamma, rotOrigin);
+                auto test = TTransformation::EulerRotate(alpha, beta, gamma, rotOrigin);
 
                 TPoint origin{0, 0, 0};
                 auto a = TTransformation::Translation(rotOrigin - origin);
@@ -256,16 +255,12 @@ TEST(TTransformation, EulerRotate) {
                 auto reference = a * Rz * Ry * Rx * c;
 
                 ASSERT_EQ(test.transform(x), reference.transform(x))
-                    << "alpha " << alpha << " beta " << beta << " gamma "
-                    << gamma;
+                    << "alpha " << alpha << " beta " << beta << " gamma " << gamma;
                 ASSERT_EQ(test.transform(y), reference.transform(y));
                 ASSERT_EQ(test.transform(z), reference.transform(z));
-                ASSERT_EQ(test.inverseTransform(x),
-                          reference.inverseTransform(x));
-                ASSERT_EQ(test.inverseTransform(y),
-                          reference.inverseTransform(y));
-                ASSERT_EQ(test.inverseTransform(z),
-                          reference.inverseTransform(z));
+                ASSERT_EQ(test.inverseTransform(x), reference.inverseTransform(x));
+                ASSERT_EQ(test.inverseTransform(y), reference.inverseTransform(y));
+                ASSERT_EQ(test.inverseTransform(z), reference.inverseTransform(z));
             }
         }
     }

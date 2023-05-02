@@ -261,6 +261,4 @@ TEST(TVec4, InequalityWithDifferent) {
     ASSERT_NE(vec, TVec4(0, 1., 1.e6, 100. - 1.99e-10));
 }
 
-TEST(TVec4, UnaryMinus) {
-    ASSERT_EQ(-TVec4(7., 1., -1.e6, 100.), TVec4(-7., -1., +1.e6, -100.));
-}
+TEST(TVec4, UnaryMinus) { ASSERT_EQ(-TVec4(7., 1., -1.e6, 100.), TVec4(-7., -1., +1.e6, -100.)); }

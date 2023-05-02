@@ -56,12 +56,8 @@ class TPoint {
         return TVector(data[0], data[1], data[2]);
     }
 
-    bool operator==(const TPoint& other) const {
-        return this->val == other.val;
-    }
-    bool operator!=(const TPoint& other) const {
-        return this->val != other.val;
-    }
+    bool operator==(const TPoint& other) const { return this->val == other.val; }
+    bool operator!=(const TPoint& other) const { return this->val != other.val; }
     double distanceSquaredTo(const TPoint& other) const {
         TVec4 data = val - other.val;
         return data.dot3(data);

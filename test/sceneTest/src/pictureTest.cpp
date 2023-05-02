@@ -45,9 +45,8 @@ TEST(TPicture, saveToPNG) {
     TPicture pic(500, 500);
     for (size_t i = 0; i < 500; ++i) {
         for (size_t j = 0; j < 500; ++j) {
-            pic.at(i, j) += sColor{
-                std::sqrt(std::abs(i - 35.)) * std::sqrt(std::abs(j - 50.)) * 3,
-                50 + 50. * sin(i / 7.), 50 + 50. * sin(i / 11.)};
+            pic.at(i, j) += sColor{std::sqrt(std::abs(i - 35.)) * std::sqrt(std::abs(j - 50.)) * 3,
+                                   50 + 50. * sin(i / 7.), 50 + 50. * sin(i / 11.)};
         }
     }
     pic.savePNG("test.png");

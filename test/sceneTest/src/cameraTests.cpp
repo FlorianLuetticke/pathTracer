@@ -61,8 +61,8 @@ TEST(TCamera, SampleAndStoreNormal) {
             auto ray = cam.castRay(row, col);
             auto optHit = sphere.intersect(ray);
             if (optHit) {
-                cam.colorAt(row, col) = sColor{
-                    optHit->normal.x(), optHit->normal.y(), optHit->normal.z()};
+                cam.colorAt(row, col) =
+                    sColor{optHit->normal.x(), optHit->normal.y(), optHit->normal.z()};
             } else {
                 cam.colorAt(row, col) = sColor{0.0, 0.0, 0.0};
             }

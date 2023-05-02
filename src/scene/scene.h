@@ -20,8 +20,7 @@ class TScene {
         for (const auto& sphere : spheres) {
             auto optHit = sphere.intersect(ray);
             if (optHit) {
-                double thisDistance =
-                    ray.origin().distanceSquaredTo(optHit->intersection);
+                double thisDistance = ray.origin().distanceSquaredTo(optHit->intersection);
 
                 if (thisDistance < distance) {
                     ret = optHit;
