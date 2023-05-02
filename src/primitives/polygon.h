@@ -13,4 +13,9 @@
 class TPolygon {
    public:
     TPolygon(){};
+
+    TPolygon(const TPoint& a, const TPoint& b, const TPoint& c){};
+
+    TVector u() { return {1, 0, 0}; }
+    TVector v() { return {0, 1, 0}; }
 };

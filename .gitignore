@@ -7,3 +7,4 @@ test/mathTest/mathTest
 test/sceneTest/sceneTest
 test/sceneTest/test.png
 renderer
+*.png
