@@ -6,3 +6,4 @@ test/mathTest/mathTest
 **/.cache/*
 test/sceneTest/sceneTest
 test/sceneTest/test.png
+renderer
