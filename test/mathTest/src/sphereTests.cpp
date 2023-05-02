@@ -1,9 +1,9 @@
 #include <cmath>
 
 #include "gtest/gtest.h"
-#include "point.h"
-#include "sphere.h"
-#include "vector.h"
+#include "math/point.h"
+#include "math/vector.h"
+#include "primitives/sphere.h"
 
 TEST(TSphere, Create) {
     TSphere sphere;

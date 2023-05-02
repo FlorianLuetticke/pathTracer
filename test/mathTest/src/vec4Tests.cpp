@@ -2,7 +2,7 @@
 
 #include "fmt/format.h"
 #include "gtest/gtest.h"
-#include "vec4.h"
+#include "math/vec4.h"
 
 TEST(TVec4, Create) {
     TVec4 vec1;

@@ -3,8 +3,8 @@
 #include "fmt/format.h"
 #include "fmt/ostream.h"
 #include "gtest/gtest.h"
-#include "transformation.h"
-#include "vector.h"
+#include "math/transformation.h"
+#include "math/vector.h"
 
 TEST(TTransformation, CreateEmpty) {
     TTransformation trafo;

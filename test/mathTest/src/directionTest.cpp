@@ -2,7 +2,7 @@
 
 #include "gtest/gtest-printers.h"
 #include "gtest/gtest.h"
-#include "vector.h"
+#include "math/vector.h"
 TEST(TVector, Create) {
     TVector vector;
 

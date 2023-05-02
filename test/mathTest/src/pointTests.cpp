@@ -1,7 +1,7 @@
 #include <cmath>
 
 #include "gtest/gtest.h"
-#include "point.h"
+#include "math/point.h"
 
 TEST(TPoint, Create) {
     TPoint point;
