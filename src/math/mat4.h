@@ -174,6 +174,28 @@ class TMat4 {
         }
     }
 
+    TMat4 calculateInvertedTranspose3x3() const {
+        TMat4 invTrans;
+        const TMat4 &mat = *this;
+        double determinant = mat(0, 0) * (mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2)) -
+                             mat(0, 1) * (mat(1, 0) * mat(2, 2) - mat(1, 2) * mat(2, 0)) +
+                             mat(0, 2) * (mat(1, 0) * mat(2, 1) - mat(1, 1) * mat(2, 0));
+        if (std::abs(determinant) < 1e-6) {
+            throw std::runtime_error("bad determinant");
+        }
+        double invdet = 1 / determinant;
+        invTrans(0, 0) = (mat(1, 1) * mat(2, 2) - mat(2, 1) * mat(1, 2)) * invdet;
+        invTrans(1, 0) = -(mat(0, 1) * mat(2, 2) - mat(0, 2) * mat(2, 1)) * invdet;
+        invTrans(2, 0) = (mat(0, 1) * mat(1, 2) - mat(0, 2) * mat(1, 1)) * invdet;
+        invTrans(0, 1) = -(mat(1, 0) * mat(2, 2) - mat(1, 2) * mat(2, 0)) * invdet;
+        invTrans(1, 1) = (mat(0, 0) * mat(2, 2) - mat(0, 2) * mat(2, 0)) * invdet;
+        invTrans(2, 1) = -(mat(0, 0) * mat(1, 2) - mat(1, 0) * mat(0, 2)) * invdet;
+        invTrans(0, 2) = (mat(1, 0) * mat(2, 1) - mat(2, 0) * mat(1, 1)) * invdet;
+        invTrans(1, 2) = -(mat(0, 0) * mat(2, 1) - mat(2, 0) * mat(0, 1)) * invdet;
+        invTrans(2, 2) = (mat(0, 0) * mat(1, 1) - mat(1, 0) * mat(0, 1)) * invdet;
+        return invTrans;
+    }
+
     friend std::ostream &operator<<(std::ostream &os, const TMat4 &mat) {
         os << "[";
         for (size_t i = 0; i < 4; ++i) {

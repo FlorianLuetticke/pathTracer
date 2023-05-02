@@ -14,22 +14,6 @@ class TTransformation {
     TMat4 _mat;
     TMat4 _invTransMat;
 
-    void calculateInvertedTranspose3x3() {
-        double determinant = +_mat(0, 0) * (_mat(1, 1) * _mat(2, 2) - _mat(2, 1) * _mat(1, 2)) -
-                             _mat(0, 1) * (_mat(1, 0) * _mat(2, 2) - _mat(1, 2) * _mat(2, 0)) +
-                             _mat(0, 2) * (_mat(1, 0) * _mat(2, 1) - _mat(1, 1) * _mat(2, 0));
-        double invdet = 1 / determinant;
-        _invTransMat(0, 0) = (_mat(1, 1) * _mat(2, 2) - _mat(2, 1) * _mat(1, 2)) * invdet;
-        _invTransMat(1, 0) = -(_mat(0, 1) * _mat(2, 2) - _mat(0, 2) * _mat(2, 1)) * invdet;
-        _invTransMat(2, 0) = (_mat(0, 1) * _mat(1, 2) - _mat(0, 2) * _mat(1, 1)) * invdet;
-        _invTransMat(0, 1) = -(_mat(1, 0) * _mat(2, 2) - _mat(1, 2) * _mat(2, 0)) * invdet;
-        _invTransMat(1, 1) = (_mat(0, 0) * _mat(2, 2) - _mat(0, 2) * _mat(2, 0)) * invdet;
-        _invTransMat(2, 1) = -(_mat(0, 0) * _mat(1, 2) - _mat(1, 0) * _mat(0, 2)) * invdet;
-        _invTransMat(0, 2) = (_mat(1, 0) * _mat(2, 1) - _mat(2, 0) * _mat(1, 1)) * invdet;
-        _invTransMat(1, 2) = -(_mat(0, 0) * _mat(2, 1) - _mat(2, 0) * _mat(0, 1)) * invdet;
-        _invTransMat(2, 2) = (_mat(0, 0) * _mat(1, 1) - _mat(1, 0) * _mat(0, 1)) * invdet;
-    }
-
    public:
     TTransformation(){};
     TTransformation(const TMat4 &mat_, const TMat4 &invTransMat_)
@@ -95,6 +79,42 @@ class TTransformation {
         TTransformation ret{rot, rot};
         ret._mat.calculateOffsetFrom3x3(origin.underlying());
         ret._invTransMat.calculateInverseOffsetFrom3x3(origin.underlying());
+        return ret;
+    }
+    // translate x to 1,0,0, y to 0,1,0 and z to 0,0,1
+    static TTransformation BaseChange(const TVector &x, const TVector &y, const TVector &z) {
+        TMat4 invTrans;
+        invTrans(3, 3) = 1;
+        for (size_t i = 0; i < 3; ++i) {
+            invTrans(0, i) = x.underlying()[i];
+            invTrans(1, i) = y.underlying()[i];
+            invTrans(2, i) = z.underlying()[i];
+        }
+        TMat4 mat = invTrans.calculateInvertedTranspose3x3();
+        mat(3, 3) = 1;
+
+        return {mat, invTrans};
+    }
+    // like above, but point newOrigin will be the new Origin, i.e. Point newOrigin+x  will
+    // translate to Point 1,0,0;
+
+    static TTransformation BaseChangeWithTranslation(const TVector &x, const TVector &y,
+                                                     const TVector &z, const TPoint &newOrigin) {
+        TMat4 invTrans;
+        invTrans(3, 3) = 1;
+        for (size_t i = 0; i < 3; ++i) {
+            invTrans(0, i) = x.underlying()[i];
+            invTrans(1, i) = y.underlying()[i];
+            invTrans(2, i) = z.underlying()[i];
+        }
+        TMat4 mat = invTrans.calculateInvertedTranspose3x3();
+        mat(3, 3) = 1;
+        TTransformation ret{mat, invTrans};
+        ret._mat.calculateOffsetFrom3x3(newOrigin.underlying());
+        for (size_t i = 0; i < 3; ++i) {
+            ret._mat(i, 3) += -newOrigin.underlying()[i];
+            ret._invTransMat(3, i) += newOrigin.underlying()[i];
+        }
         return ret;
     }
 
