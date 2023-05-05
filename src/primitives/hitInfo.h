@@ -1,4 +1,4 @@
-
+#pragma once
 #include "math/point.h"
 #include "math/vector.h"
 class TMaterial;
