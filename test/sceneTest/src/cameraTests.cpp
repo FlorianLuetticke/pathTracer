@@ -5,6 +5,7 @@
 #include "math/ray.h"
 #include "primitives/sphere.h"
 #include "scene/camera.h"
+#include "scene/lightIntensity.h"
 #include "scene/picture.h"
 
 TEST(TCamera, Create) {
@@ -43,9 +44,9 @@ TEST(TCamera, SampleAndStoreImage) {
         for (size_t col = 0; col < cam.columns(); ++col) {
             auto ray = cam.castRay(row, col);
             if (sphere.intersect(ray)) {
-                cam.colorAt(row, col) = sColor{1., 0., 0.};
+                cam.colorAt(row, col) = TLightIntensity{1., 0., 0.};
             } else {
-                cam.colorAt(row, col) = sColor{0.2, 0.2, 0.2};
+                cam.colorAt(row, col) = TLightIntensity{0.2, 0.2, 0.2};
             }
         }
     }
@@ -62,9 +63,9 @@ TEST(TCamera, SampleAndStoreNormal) {
             auto optHit = sphere.intersect(ray);
             if (optHit) {
                 cam.colorAt(row, col) =
-                    sColor{optHit->normal.x(), optHit->normal.y(), optHit->normal.z()};
+                    TLightIntensity{optHit->normal.x(), optHit->normal.y(), optHit->normal.z()};
             } else {
-                cam.colorAt(row, col) = sColor{0.0, 0.0, 0.0};
+                cam.colorAt(row, col) = TLightIntensity{0.0, 0.0, 0.0};
             }
         }
     }
