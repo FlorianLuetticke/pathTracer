@@ -16,7 +16,7 @@ std::uint8_t linear_function(float x, float _maxval, float _minval) {
     return static_cast<uint8_t>(
         lround(std::clamp(x - _minval, 0.0f, _maxval - _minval) / (_maxval - _minval) * 255));
 }
-void TPicture::savePNG(std::string filename, bool linear) const {
+void TPicture::savePNG(const std::string& filename, bool linear) const {
     // int stbi_write_png(char const *filename, int w, int h, int comp,
     // const void *data, int stride_in_bytes);
     double minval = std::numeric_limits<double>::max();

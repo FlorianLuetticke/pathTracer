@@ -7,6 +7,7 @@
 #include "math/ray.h"
 #include "math/vector.h"
 #include "picture.h"
+#include "scene/lightIntensity.h"
 
 // camera points towards X for now.
 class TCamera {
@@ -41,7 +42,7 @@ class TCamera {
         return TRay(TPoint(0., 0., 0.), TVector(1., _offsetRow[row] + _widthPerPixel * subRow,
                                                 _offsetCol[col] + _widthPerPixel * subCol));
     }
-    sColor& colorAt(size_t row, size_t col) { return _picture.at(row, col); }
+    TLightIntensity& colorAt(size_t row, size_t col) { return _picture.at(row, col); }
     const TPicture& picture() const { return _picture; }
     size_t rows() const { return _row; }
     size_t columns() const { return _col; }
