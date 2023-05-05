@@ -8,6 +8,7 @@
 #include "fmt/format.h"
 #include "mat4.h"
 #include "point.h"
+#include "ray.h"
 #include "vector.h"
 
 class TTransformation {
@@ -134,6 +135,16 @@ class TTransformation {
     TVector inverseTransform(const TVector &in) const {
         return _invTransMat.transpose() * in.underlying();
     }
+
+    TRay transform(const TRay &in) const {
+        return {transform(in.origin()), transform(in.direction())};
+    }
+    TRay inverseTransform(const TRay &in) const {
+        return {inverseTransform(in.origin()), inverseTransform(in.direction())};
+    }
+
+    const TMat4 &getTrafoMatrix() const { return _mat; }
+    const TMat4 &getInverseTransposedTrafoMatrix() const { return _invTransMat; }
 
     friend std::ostream &operator<<(std::ostream &os, const TTransformation &tr) {
         os << tr._mat << " inverse: " << tr._invTransMat;
